@@ -3,80 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Watchlist</title>
+  <title>Growth-list</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0c10;
-      --surface: #111318;
-      --border: #1e2130;
-      --muted: #3a3f52;
-      --text: #e8eaf0;
-      --sub: #6b7194;
-      --up: #22d483;
-      --down: #f45b5b;
-      --accent: #5b8af4;
-      --glow: rgba(91,138,244,0.15);
+      --bg:       #f0ede8;
+      --surface:  #ffffff;
+      --border:   #e2ddd7;
+      --divider:  #ede9e4;
+      --text:     #1c1917;
+      --sub:      #78716c;
+      --muted:    #a8a29e;
+      --up:       #16a34a;
+      --up-bg:    #f0fdf4;
+      --down:     #dc2626;
+      --down-bg:  #fef2f2;
+      --india:    #ea580c;
+      --india-bg: #fff7ed;
+      --usa:      #2563eb;
+      --usa-bg:   #eff6ff;
+      --shadow:   0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 40px 24px;
-      background-image:
-        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(91,138,244,0.08) 0%, transparent 70%);
+      padding: 40px 24px 60px;
     }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1100px; margin: 0 auto; }
 
+    /* ── Header ── */
     header {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-label {
+    .brand-eyebrow {
       font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
       font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 4px;
     }
 
     h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1;
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     #last-updated {
       font-size: 12px;
-      color: var(--sub);
-      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
     }
 
     .refresh-btn {
@@ -86,246 +82,227 @@
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 13px;
       font-weight: 600;
       padding: 8px 16px;
       border-radius: 8px;
       cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, border-color 0.2s;
     }
 
     .refresh-btn:hover {
-      border-color: var(--accent);
-      background: var(--glow);
+      border-color: var(--usa);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
     }
 
-    .refresh-btn svg {
-      transition: transform 0.5s;
+    .refresh-btn.spinning svg { animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Two-column grid ── */
+    .tables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
-    .refresh-btn.spinning svg {
-      animation: spin 0.8s linear infinite;
+    @media (max-width: 700px) {
+      .tables-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.5rem; }
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .table-wrap {
+    /* ── Table card ── */
+    .table-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
+      box-shadow: var(--shadow);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .table-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px 12px;
+      border-bottom: 1px solid var(--divider);
+      background: #faf9f7;
     }
+
+    .market-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .market-pill.india { color: var(--india); background: var(--india-bg); border: 1px solid #fed7aa; }
+    .market-pill.usa   { color: var(--usa);   background: var(--usa-bg);   border: 1px solid #bfdbfe; }
+
+    .market-currency {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
 
     thead th {
       font-size: 10px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--sub);
-      font-weight: 700;
-      padding: 14px 20px;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 9px 16px;
       text-align: left;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--divider);
     }
 
-    thead th:last-child { text-align: right; }
+    thead th:not(:first-child) { text-align: right; }
 
     tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
+      border-bottom: 1px solid var(--divider);
+      transition: background 0.12s;
     }
 
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    tbody tr:hover { background: #faf9f7; }
 
-    td {
-      padding: 18px 20px;
-    }
+    td { padding: 12px 16px; }
 
     .symbol-cell {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 9px;
     }
 
     .symbol-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: var(--border);
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.03em;
+      font-size: 9.5px;
+      font-weight: 700;
       flex-shrink: 0;
+      letter-spacing: -0.01em;
     }
+
+    .symbol-icon.india { background: var(--india-bg); color: var(--india); }
+    .symbol-icon.usa   { background: var(--usa-bg);   color: var(--usa); }
 
     .symbol-name {
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: 0.01em;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
     }
 
-    .symbol-exchange {
-      font-size: 11px;
-      color: var(--sub);
-      margin-top: 2px;
+    .symbol-full {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 110px;
     }
 
-    .price-cell {
-      text-align: right;
-    }
+    .price-cell { text-align: right; }
 
     .price-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
     }
 
-    .price-currency {
-      font-size: 11px;
-      color: var(--sub);
-      margin-top: 2px;
-      font-family: 'Space Mono', monospace;
-    }
-
-    .change-cell {
-      text-align: right;
-    }
+    .change-cell { text-align: right; }
 
     .change-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-
-    .change-badge.up {
-      color: var(--up);
-      background: rgba(34,212,131,0.1);
-    }
-
-    .change-badge.down {
-      color: var(--down);
-      background: rgba(244,91,91,0.1);
-    }
-
-    .change-badge.neutral {
-      color: var(--sub);
-      background: rgba(107,113,148,0.1);
-    }
-
-    /* Skeleton loader */
-    .skeleton-row td {
-      padding: 18px 20px;
-    }
-
-    .skeleton {
-      background: linear-gradient(90deg, var(--border) 25%, var(--muted) 50%, var(--border) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      border-radius: 6px;
-      height: 14px;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .skeleton-icon { width: 36px; height: 36px; border-radius: 8px; }
-    .skeleton-text { width: 80px; }
-    .skeleton-sub { width: 50px; height: 10px; margin-top: 5px; }
-    .skeleton-price { width: 70px; margin-left: auto; }
-    .skeleton-change { width: 60px; margin-left: auto; }
-
-    .error-row td {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--down);
-      font-size: 14px;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 36px 0 14px;
-    }
-
-    .section-label-text {
+      gap: 3px;
+      font-family: 'DM Mono', monospace;
       font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 500;
+      padding: 3px 7px;
+      border-radius: 5px;
       white-space: nowrap;
     }
 
-    .section-label-text.india { color: #f97316; }
-    .section-label-text.usa   { color: #5b8af4; }
+    .change-badge.up      { color: var(--up);   background: var(--up-bg); }
+    .change-badge.down    { color: var(--down);  background: var(--down-bg); }
+    .change-badge.neutral { color: var(--muted); background: var(--divider); }
 
-    .section-label-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    /* ── Skeleton ── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--divider) 25%, #e4dfd8 50%, var(--divider) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      height: 12px;
     }
 
-    footer {
-      margin-top: 20px;
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .sk-icon  { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; }
+    .sk-name  { width: 56px; }
+    .sk-sub   { width: 72px; height: 9px; margin-top: 4px; }
+    .sk-price { width: 52px; margin-left: auto; }
+    .sk-chg   { width: 44px; margin-left: auto; }
+
+    .error-row td {
       text-align: center;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
+      padding: 28px 16px;
+      color: var(--down);
+      font-size: 13px;
     }
 
+    /* ── Animations ── */
     @keyframes fadeInRow {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .data-row {
-      animation: fadeInRow 0.3s ease both;
-    }
+    .data-row { animation: fadeInRow 0.25s ease both; }
+    .flash-up   { animation: flashUp   0.7s ease; }
+    .flash-down { animation: flashDown 0.7s ease; }
 
-    .flash-up   { animation: flashUp 0.6s ease; }
-    .flash-down { animation: flashDown 0.6s ease; }
+    @keyframes flashUp   { 0% { background: #dcfce7; } 100% { background: transparent; } }
+    @keyframes flashDown { 0% { background: #fee2e2; } 100% { background: transparent; } }
 
-    @keyframes flashUp {
-      0%   { background: rgba(34,212,131,0.12); }
-      100% { background: transparent; }
-    }
-    @keyframes flashDown {
-      0%   { background: rgba(244,91,91,0.12); }
-      100% { background: transparent; }
+    footer {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
     }
   </style>
 </head>
 <body>
 <div class="container">
+
   <header>
-    <div class="brand">
-      <span class="brand-label">Global Markets</span>
-      <h1>Watchlist</h1>
+    <div>
+      <div class="brand-eyebrow">All Markets</div>
+      <h1>Our Growth-list, Nandini & Dhaval</h1>
     </div>
     <div class="header-right">
       <span id="last-updated">—</span>
       <button class="refresh-btn" onclick="loadStocks()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
           <path d="M21 3v5h-5"/>
         </svg>
@@ -334,62 +311,54 @@
     </div>
   </header>
 
-  <!-- India table -->
-  <div class="section-label">
-    <span class="section-label-text india">🇮🇳 NSE India</span>
-    <div class="section-label-line"></div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Stock</th>
-          <th style="text-align:right">Price (₹)</th>
-          <th style="text-align:right">Change</th>
-        </tr>
-      </thead>
-      <tbody id="indiaTableBody">
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-      </tbody>
-    </table>
+  <div class="tables-grid">
+
+    <!-- India -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="market-pill india">🇮🇳 NSE India</span>
+        <span class="market-currency">Prices in ₹ INR</span>
+      </div>
+      <table>
+        <thead><tr><th>Stock</th><th>Price</th><th>Change</th></tr></thead>
+        <tbody id="indiaTableBody">
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- USA -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="market-pill usa">🇺🇸 NASDAQ / NYSE</span>
+        <span class="market-currency">Prices in $ USD</span>
+      </div>
+      <table>
+        <thead><tr><th>Stock</th><th>Price</th><th>Change</th></tr></thead>
+        <tbody id="usaTableBody">
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+          <tr><td><div class="symbol-cell"><div class="skeleton sk-icon"></div><div><div class="skeleton sk-name"></div><div class="skeleton sk-sub"></div></div></div></td><td><div class="skeleton sk-price"></div></td><td><div class="skeleton sk-chg"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
-  <!-- USA table -->
-  <div class="section-label">
-    <span class="section-label-text usa">🇺🇸 NASDAQ / NYSE</span>
-    <div class="section-label-line"></div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Stock</th>
-          <th style="text-align:right">Price ($)</th>
-          <th style="text-align:right">Change</th>
-        </tr>
-      </thead>
-      <tbody id="usaTableBody">
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-        <tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>
-      </tbody>
-    </table>
-  </div>
+  <footer>Data via Yahoo Finance &nbsp;·&nbsp; Prices delayed ~15 min &nbsp;·&nbsp; Auto-refreshes every 60s</footer>
 
-  <footer>Data via Yahoo Finance · Prices delayed ~15 min</footer>
 </div>
-
 <script>
   const INDIA_NAMES = {
-    RELIANCE:  'Reliance Industries',
+    RELIANCE:  'Reliance Ind.',
     TCS:       'Tata Consultancy',
     INFY:      'Infosys',
     HDFCBANK:  'HDFC Bank',
@@ -399,7 +368,7 @@
   const USA_NAMES = {
     MSFT:  'Microsoft',
     ORCL:  'Oracle',
-    GOOGL: 'Alphabet (Google)',
+    GOOGL: 'Alphabet',
     NVDA:  'NVIDIA',
     CSCO:  'Cisco',
     AVGO:  'Broadcom',
@@ -408,89 +377,63 @@
 
   let prevPrices = {};
 
-  function fmtINR(n) {
-    return '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function fmtUSD(n) {
-    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function skeletonRows(n) {
-    return Array(n).fill(`<tr class="skeleton-row"><td><div style="display:flex;gap:12px;align-items:center"><div class="skeleton skeleton-icon"></div><div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-sub"></div></div></div></td><td><div class="skeleton skeleton-price"></div></td><td><div class="skeleton skeleton-change"></div></td></tr>`).join('');
-  }
+  const fmtINR = n => '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtUSD = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   async function loadStocks() {
     const btn = document.querySelector('.refresh-btn');
     btn.classList.add('spinning');
-
     try {
       const res = await fetch('/api/prices');
-      if (!res.ok) throw new Error('Request failed');
+      if (!res.ok) throw new Error('failed');
       const data = await res.json();
 
-      const india = data.filter(s => s.symbol.endsWith('.NS'));
-      const usa   = data.filter(s => !s.symbol.endsWith('.NS'));
+      renderTable(data.filter(s => s.symbol.endsWith('.NS')), 'indiaTableBody', fmtINR, INDIA_NAMES, '.NS', 'india');
+      renderTable(data.filter(s => !s.symbol.endsWith('.NS')), 'usaTableBody',  fmtUSD, USA_NAMES,   '',    'usa');
 
-      renderTable(india, 'indiaTableBody', fmtINR, INDIA_NAMES, '.NS');
-      renderTable(usa,   'usaTableBody',   fmtUSD, USA_NAMES,   '');
-
-      const now = new Date();
       document.getElementById('last-updated').textContent =
-        'Updated ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    } catch (err) {
-      const errRow = `<tr class="error-row"><td colspan="3">⚠ Could not load prices. Try again.</td></tr>`;
-      document.getElementById('indiaTableBody').innerHTML = errRow;
-      document.getElementById('usaTableBody').innerHTML   = errRow;
+        'Updated ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      const err = `<tr class="error-row"><td colspan="3">⚠ Could not load prices. Try again.</td></tr>`;
+      document.getElementById('indiaTableBody').innerHTML = err;
+      document.getElementById('usaTableBody').innerHTML   = err;
     } finally {
       btn.classList.remove('spinning');
     }
   }
 
-  function renderTable(data, tbodyId, fmtPrice, names, stripSuffix) {
+  function renderTable(data, tbodyId, fmt, names, strip, market) {
     const tbody = document.getElementById(tbodyId);
     tbody.innerHTML = '';
-
     data.forEach((stock, i) => {
-      const sym       = stock.symbol.replace(stripSuffix, '');
+      const sym       = stock.symbol.replace(strip, '');
       const price     = stock.price;
       const prevClose = stock.previousClose || price;
       const change    = price - prevClose;
-      const changePct = prevClose ? (change / prevClose) * 100 : 0;
+      const pct       = prevClose ? (change / prevClose) * 100 : 0;
       const isUp      = change >= 0;
-      const initials  = sym.slice(0, 3);
 
-      let flashClass = '';
-      if (prevPrices[sym] !== undefined) {
-        flashClass = price > prevPrices[sym] ? 'flash-up' : price < prevPrices[sym] ? 'flash-down' : '';
-      }
+      let flash = '';
+      if (prevPrices[sym] !== undefined)
+        flash = price > prevPrices[sym] ? 'flash-up' : price < prevPrices[sym] ? 'flash-down' : '';
       prevPrices[sym] = price;
 
-      const arrow     = isUp ? '▲' : '▼';
-      const badgeClass = Math.abs(changePct) < 0.01 ? 'neutral' : (isUp ? 'up' : 'down');
-
+      const badge = Math.abs(pct) < 0.01 ? 'neutral' : isUp ? 'up' : 'down';
       const tr = document.createElement('tr');
-      tr.className = `data-row ${flashClass}`;
-      tr.style.animationDelay = `${i * 60}ms`;
+      tr.className = `data-row ${flash}`;
+      tr.style.animationDelay = `${i * 50}ms`;
       tr.innerHTML = `
-        <td>
-          <div class="symbol-cell">
-            <div class="symbol-icon">${initials}</div>
-            <div>
-              <div class="symbol-name">${sym}</div>
-              <div class="symbol-exchange">${names[sym] || ''}</div>
-            </div>
+        <td><div class="symbol-cell">
+          <div class="symbol-icon ${market}">${sym.slice(0,3)}</div>
+          <div>
+            <div class="symbol-name">${sym}</div>
+            <div class="symbol-full">${names[sym] || ''}</div>
           </div>
-        </td>
-        <td class="price-cell">
-          <div class="price-value">${fmtPrice(price)}</div>
-        </td>
+        </div></td>
+        <td class="price-cell"><div class="price-value">${fmt(price)}</div></td>
         <td class="change-cell">
-          <span class="change-badge ${badgeClass}">
-            ${arrow} ${Math.abs(changePct).toFixed(2)}%
-          </span>
-        </td>
-      `;
+          <span class="change-badge ${badge}">${isUp ? '▲' : '▼'} ${Math.abs(pct).toFixed(2)}%</span>
+        </td>`;
       tbody.appendChild(tr);
     });
   }
